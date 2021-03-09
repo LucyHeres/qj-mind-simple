@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+    <style>
+      * {
+        box-sizing: border-box;
+      }
+      body {
+        padding: 0;
+        margin: 0;
+      }
+      #canvas-container {
+        width: 800px;
+        height: 500px;
+        overflow: auto;
+        position: relative;
+      }
+    </style>
+    <script src="../lib/main.js"></script>
+    <script src="./parse.js"></script>
+  </head>
+  <body>
+    <div id="canvas-container"></div>
+    <script>
+      var container = document.querySelector("#canvas-container");
+      container.style.width = window.innerWidth + "px";
+      container.style.height = window.innerHeight + "px";
+      // 绘制节点
+      var options = {
+        container: "#canvas-container",
+        keyNode_w: 320,
+        keyNode_h: 100,
+        hub_radius: 10,
+        line_color: "#e3e4e5",
+      };
+      var QjMind = window.qjmind;
+      var qjm = new QjMind(options, {
+        keyNodeClick: function (node) {
+          console.log("点击了okr节点", node.objectiveId);
+          //
+        },
+      });
+      qjm.render(nodeArray);
+    </script>
+  </body>
+</html>
