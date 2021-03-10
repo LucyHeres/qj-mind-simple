@@ -11,7 +11,7 @@ module.exports = {
     filename: "[name].js",
     library: "qjmind",
     libraryExport: "default",
-    libraryTarget: "umd", // var this window ...
+    libraryTarget: "umd", 
   },
   devtool: 'source-map', 
   module: {

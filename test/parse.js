@@ -97,18 +97,17 @@ function getScheduleColor(dangerDesc) {
     }[dangerDesc] || "#333333"
   );
 }
-
-function initRoot() {
-  for (var i = 0; i < array.length; i++) {
+function initRoot(array) {
+  for (let i = 0; i < array.length; i++) {
     array[i].isRoot = true;
   }
 }
 
 function parseJson(array, dir) {
-  var newArr = [];
-  for (var i = 0; i < array.length; i++) {
-    var obj = array[i];
-    var newObj = {};
+  let newArr = [];
+  for (let i = 0; i < array.length; i++) {
+    let obj = array[i];
+    let newObj = {};
     newObj.objectiveId = obj.objectiveId;
     if (obj.isRoot) newObj.isRoot = obj.isRoot;
     newObj.text = [
@@ -183,31 +182,37 @@ function parseJson(array, dir) {
     ];
 
     if (obj.isRoot) {
-      newObj.expanded_l = false;
-      newObj.expanded_r = false;
-      newObj.children_count_l = obj.superCount;
-      newObj.children_count_r = obj.childCount;
+      newObj.expandedLeft = false;
+      newObj.expandedRight = false;
+      newObj.childrenCountLeft = obj.superCount;
+      newObj.childrenCountRight = obj.childCount;
       newObj.children = [];
-      newObj.children = newObj.children.concat(parseJson(obj.superOkr, -1));
-      newObj.children = newObj.children.concat(parseJson(obj.childOkr, 1));
+      if (obj.superOkr)
+        newObj.children = newObj.children.concat(parseJson(obj.superOkr, -1));
+      if (obj.childOkr)
+        newObj.children = newObj.children.concat(parseJson(obj.childOkr, 1));
     } else {
       newObj.expanded = false;
       newObj.direction = dir;
       newObj.children = [];
       if (dir === -1 && obj.superCount) {
-        newObj.children_count = obj.superCount;
-        newObj.children = newObj.children.concat(parseJson(obj.superOkr, -1));
+        newObj.childrenCount = obj.superCount;
+        if (obj.superOkr)
+          newObj.children = newObj.children.concat(parseJson(obj.superOkr, -1));
       }
       if (dir === 1 && obj.childCount) {
-        newObj.children_count = obj.childCount;
-        newObj.children = newObj.children.concat(parseJson(obj.childOkr, 1));
+        newObj.childrenCount = obj.childCount;
+        if (obj.childOkr)
+          newObj.children = newObj.children.concat(parseJson(obj.childOkr, 1));
       }
     }
     newArr.push(newObj);
   }
   return newArr;
 }
+function getMindData(data) {
+  initRoot(data);
+  return parseJson(data);
+}
 
-initRoot(array);
-var nodeArray = parseJson(array);
-
+var nodeArray = getMindData(array);
